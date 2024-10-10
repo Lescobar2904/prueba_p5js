@@ -6,7 +6,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(800, 800); // Tamaño del lienzo
+    createCanvas(400, 400); // Tamaño del lienzo
 }
 
 function draw() {

@@ -4,7 +4,7 @@ let currentIndex = 0;
 function preload() {
   // Carga las imágenes desde image1.jpeg hasta image9.jpeg
   for (let i = 1; i <= 9; i++) {
-    images.push(loadImage(`images/image${i}.jpeg`)); // Asegúrate de que las imágenes estén en la carpeta 'images'
+    images.push(loadImage(`images/image${i}.jpeg`));
   }
 }
 
@@ -20,7 +20,22 @@ function draw() {
 function displayImage() {
   background(255);
   if (images.length > 0) {
-    image(images[currentIndex], 0, 0, width, height);
+    let img = images[currentIndex];
+    let aspectRatio = img.width / img.height;
+    let canvasAspectRatio = width / height;
+
+    // Calcular el tamaño de la imagen para que mantenga la relación de aspecto
+    if (canvasAspectRatio > aspectRatio) {
+      // El lienzo es más ancho que la imagen
+      let imgHeight = height;
+      let imgWidth = imgHeight * aspectRatio;
+      image(img, (width - imgWidth) / 2, 0, imgWidth, imgHeight);
+    } else {
+      // El lienzo es más alto que la imagen
+      let imgWidth = width;
+      let imgHeight = imgWidth / aspectRatio;
+      image(img, 0, (height - imgHeight) / 2, imgWidth, imgHeight);
+    }
   }
 }
 

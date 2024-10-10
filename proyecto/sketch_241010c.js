@@ -49,6 +49,12 @@ function keyPressed() {
   }
 }
 
+function mousePressed() {
+  // Cambia a la siguiente imagen al hacer clic
+  currentIndex = (currentIndex + 1) % images.length; // Siguiente imagen
+  displayImage();
+}
+
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   displayImage();

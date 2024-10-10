@@ -12,7 +12,7 @@ function setup() {
 function draw() {
     background(255); // Fondo blanco
     // Mostrar la imagen en el centro de la pantalla
-    image(img, (width - 640) / 2, (height - 640) / 2, 640, 640); // Escala a 640x640
+    image(img, (width - 640) / 2, (height - 640) / 2, 440, 440); // Escala a 640x640
 }
 
 function mousePressed() {

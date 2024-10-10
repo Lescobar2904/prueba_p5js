@@ -4,7 +4,7 @@ let currentIndex = 0;
 function preload() {
   // Carga tus imágenes aquí
   for (let i = 1; i <= 5; i++) {
-    images.push(loadImage(`images/image${i}.jpg`)); // Asegúrate de que las imágenes estén en la carpeta 'images'
+    images.push(loadImage(`images/image${i}.jpeg`)); // Asegúrate de que las imágenes estén en la carpeta 'images'
   }
 }
 

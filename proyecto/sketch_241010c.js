@@ -1,5 +1,7 @@
 let images = [];
 let currentIndex = 0;
+const maxWidth = 800;  // Ancho máximo para las imágenes
+const maxHeight = 600; // Alto máximo para las imágenes
 
 function preload() {
   // Carga las imágenes desde image1.jpeg hasta image9.jpeg
@@ -22,20 +24,20 @@ function displayImage() {
   if (images.length > 0) {
     let img = images[currentIndex];
     let aspectRatio = img.width / img.height;
-    let canvasAspectRatio = width / height;
 
-    // Calcular el tamaño de la imagen para que mantenga la relación de aspecto
-    if (canvasAspectRatio > aspectRatio) {
-      // El lienzo es más ancho que la imagen
-      let imgHeight = height;
-      let imgWidth = imgHeight * aspectRatio;
-      image(img, (width - imgWidth) / 2, 0, imgWidth, imgHeight);
+    // Calcular el tamaño de la imagen manteniendo la relación de aspecto
+    let imgWidth, imgHeight;
+
+    if (img.width > img.height) {
+      imgWidth = maxWidth; // Limitar ancho
+      imgHeight = maxWidth / aspectRatio; // Mantener relación de aspecto
     } else {
-      // El lienzo es más alto que la imagen
-      let imgWidth = width;
-      let imgHeight = imgWidth / aspectRatio;
-      image(img, 0, (height - imgHeight) / 2, imgWidth, imgHeight);
+      imgHeight = maxHeight; // Limitar alto
+      imgWidth = maxHeight * aspectRatio; // Mantener relación de aspecto
     }
+
+    // Centrar la imagen en el lienzo
+    image(img, (width - imgWidth) / 2, (height - imgHeight) / 2, imgWidth, imgHeight);
   }
 }
 

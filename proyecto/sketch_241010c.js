@@ -2,8 +2,8 @@ let images = [];
 let currentIndex = 0;
 
 function preload() {
-  // Carga tus imágenes aquí
-  for (let i = 1; i <= 5; i++) {
+  // Carga las imágenes desde image1.jpeg hasta image9.jpeg
+  for (let i = 1; i <= 9; i++) {
     images.push(loadImage(`images/image${i}.jpeg`)); // Asegúrate de que las imágenes estén en la carpeta 'images'
   }
 }
@@ -32,4 +32,9 @@ function keyPressed() {
     currentIndex = (currentIndex - 1 + images.length) % images.length; // Imagen anterior
     displayImage();
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  displayImage();
 }

@@ -1,7 +1,7 @@
 let images = [];
 let currentIndex = 0;
 const maxWidth = 800;  // Ancho máximo para las imágenes
-const maxHeight = 600; // Alto máximo para las imágenes
+const maxHeight = 800; // Alto máximo para las imágenes
 
 function preload() {
   // Carga las imágenes desde image1.jpeg hasta image9.jpeg

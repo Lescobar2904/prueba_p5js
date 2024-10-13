@@ -1,7 +1,8 @@
 let img;
 let thumbnails = [];
 let currentImageIndex = 1;
-let filterType = ''; // Variable para almacenar el filtro
+let filterType = '';
+let particles = []; // Arreglo para partículas
 
 function preload() {
     // Cargar la primera imagen
@@ -31,10 +32,21 @@ function setup() {
     let resetButton = createButton('Quitar filtro');
     resetButton.position(width - 150, 250);
     resetButton.mousePressed(() => applyFilter(''));
+
+    // Crear partículas iniciales
+    for (let i = 0; i < 100; i++) {
+        particles.push(new Particle());
+    }
 }
 
 function draw() {
     background(0);
+
+    // Mostrar las partículas flotantes
+    for (let particle of particles) {
+        particle.update();
+        particle.show();
+    }
 
     // Mostrar las miniaturas a la izquierda
     for (let i = 1; i <= 9; i++) {
@@ -82,4 +94,34 @@ function applySepia() {
         pixels[i + 2] = r * 0.272 + g * 0.534 + b * 0.131;
     }
     updatePixels();
+}
+
+// Clase para partículas flotantes
+class Particle {
+    constructor() {
+        this.x = random(width);
+        this.y = random(height);
+        this.vx = random(-1, 1);
+        this.vy = random(-1, 1);
+        this.size = random(2, 5);
+    }
+
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Rebote en los bordes
+        if (this.x > width || this.x < 0) {
+            this.vx *= -1;
+        }
+        if (this.y > height || this.y < 0) {
+            this.vy *= -1;
+        }
+    }
+
+    show() {
+        noStroke();
+        fill(255, 100);
+        ellipse(this.x, this.y, this.size);
+    }
 }

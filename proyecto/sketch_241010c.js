@@ -1,96 +1,62 @@
-let img; // Variable para almacenar la imagen principal
-let currentImageIndex = 1; // Índice de la imagen actual
-let imgWidth = 400; // Ancho deseado para la imagen principal
-let imgHeight = 400; // Alto deseado para la imagen principal
-let thumbnails = []; // Arreglo para las miniaturas
-let cornerRadius = 30; // Radio de las esquinas redondeadas
-let prevButton, nextButton; // Variables para los botones
+let img;
+let thumbnails = [];
+let filterType = ''; // Variable para almacenar el filtro
 
 function preload() {
-    img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la primera imagen
-
-    // Cargar las miniaturas
+    img = loadImage('images/image1.jpeg');
     for (let i = 1; i <= 9; i++) {
         thumbnails[i] = loadImage(`images/image${i}.jpeg`);
     }
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight); // Tamaño del lienzo responsivo
-    createButtons(); // Crear los botones de navegación
+    createCanvas(windowWidth, windowHeight);
+
+    // Crear botones para cambiar los filtros
+    let grayscaleButton = createButton('Blanco y Negro');
+    grayscaleButton.position(width - 150, 100);
+    grayscaleButton.mousePressed(() => applyFilter('GRAY'));
+
+    let sepiaButton = createButton('Sepia');
+    sepiaButton.position(width - 150, 150);
+    sepiaButton.mousePressed(() => applyFilter('SEPIA'));
+
+    let invertButton = createButton('Inverso');
+    invertButton.position(width - 150, 200);
+    invertButton.mousePressed(() => applyFilter('INVERT'));
+
+    let resetButton = createButton('Quitar filtro');
+    resetButton.position(width - 150, 250);
+    resetButton.mousePressed(() => applyFilter(''));
 }
 
 function draw() {
-    background(0); // Fondo negro
+    background(0);
 
-    // Mostrar miniaturas en el lado izquierdo
+    // Mostrar miniaturas
     for (let i = 1; i <= 9; i++) {
-        let thumbnailX = 10; // Posición X fija
-        let thumbnailY = i * 50; // Espacio entre miniaturas
-        image(thumbnails[i], thumbnailX, thumbnailY, 40, 40); // Mostrar miniatura a 40x40
+        image(thumbnails[i], 10, i * 50, 40, 40);
     }
 
-    // Calcular el centro de la pantalla para la imagen principal
-    let x = 150; // Ajustar posición horizontal para que no se sobreponga con las miniaturas
-    let y = (height - imgHeight) / 2;
+    // Mostrar imagen principal
+    image(img, 150, (height - 400) / 2, 400, 400);
 
-    // Mostrar la imagen principal con bordes redondeados
-    noFill();
-    stroke(255); // Color del borde
-    strokeWeight(4); // Grosor del borde
-    rect(x, y, imgWidth, imgHeight, cornerRadius); // Dibujar rectángulo con esquinas redondeadas
-
-    // Mostrar la imagen principal
-    image(img, x, y, imgWidth, imgHeight); // Mostrar la imagen en el tamaño deseado
-
-    // Reposicionar los botones a los lados de la imagen principal
-    prevButton.position(x - prevButton.width - 10, y + imgHeight / 2 - prevButton.height / 2); // Botón izquierdo
-    nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - nextButton.height / 2); // Botón derecho
+    // Aplicar filtro
+    if (filterType !== '') {
+        filter(filterType);
+    }
 }
 
+// Función para aplicar los filtros según el botón presionado
+function applyFilter(type) {
+    filterType = type;
+}
+
+// Cambiar imagen al hacer clic en miniatura
 function mousePressed() {
-    // Verificar si se hace clic en una miniatura
     for (let i = 1; i <= 9; i++) {
-        let thumbnailX = 10;
-        let thumbnailY = i * 50;
-        // Si el clic está dentro de los límites de una miniatura
-        if (mouseX > thumbnailX && mouseX < thumbnailX + 40 && mouseY > thumbnailY && mouseY < thumbnailY + 40) {
-            currentImageIndex = i; // Cambiar a la imagen correspondiente
-            img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la imagen seleccionada
+        if (mouseX > 10 && mouseX < 50 && mouseY > i * 50 && mouseY < i * 50 + 40) {
+            img = loadImage(`images/image${i}.jpeg`);
         }
     }
-}
-
-function createButtons() {
-    // Crear el botón para la imagen anterior
-    prevButton = createButton('←');
-    prevButton.mousePressed(prevImage); // Asignar función
-
-    // Crear el botón para la imagen siguiente
-    nextButton = createButton('→');
-    nextButton.mousePressed(nextImage); // Asignar función
-
-    // Estilo de los botones
-    prevButton.style('font-size', '24px');
-    nextButton.style('font-size', '24px');
-}
-
-function prevImage() {
-    currentImageIndex--; // Decrementar el índice
-    if (currentImageIndex < 1) {
-        currentImageIndex = 9; // Si es menor que 1, volver a la última imagen
-    }
-    img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la imagen anterior
-}
-
-function nextImage() {
-    currentImageIndex++; // Incrementar el índice
-    if (currentImageIndex > 9) {
-        currentImageIndex = 1; // Si excede el número de imágenes, volver a la primera
-    }
-    img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la siguiente imagen
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight); // Ajustar el lienzo al cambiar el tamaño de la ventana
 }

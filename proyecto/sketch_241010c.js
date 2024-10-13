@@ -3,6 +3,7 @@ let currentImageIndex = 1; // Índice de la imagen actual
 let imgWidth = 400; // Ancho deseado para la imagen principal
 let imgHeight = 400; // Alto deseado para la imagen principal
 let thumbnails = []; // Arreglo para las miniaturas
+let cornerRadius = 30; // Radio de las esquinas redondeadas
 
 function preload() {
     img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la primera imagen
@@ -32,12 +33,30 @@ function draw() {
     let x = 150; // Ajustar posición horizontal para que no se sobreponga con las miniaturas
     let y = (height - imgHeight) / 2;
 
-    // Mostrar la imagen principal en el centro de la pantalla
+    // Dibujar un rectángulo redondeado
+    noFill();
+    stroke(255); // Color del borde
+    strokeWeight(4); // Grosor del borde
+    rect(x, y, imgWidth, imgHeight, cornerRadius); // Dibujar rectángulo con esquinas redondeadas
+
+    // Usar clip() para que la imagen tenga los bordes redondeados
+    beginShape();
+    vertex(x, y);
+    vertex(x + imgWidth, y);
+    vertex(x + imgWidth, y + imgHeight);
+    vertex(x, y + imgHeight);
+    endShape(CLOSE);
+    clip();
+
+    // Mostrar la imagen principal dentro del área recortada
     image(img, x, y, imgWidth, imgHeight); // Mostrar la imagen en el tamaño deseado
 
     // Reposicionar los botones a los lados de la imagen principal
     prevButton.position(x - 50, y + imgHeight / 2 - 20); // Botón izquierdo
     nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - 20); // Botón derecho
+
+    // Terminar el clipping para que los elementos siguientes no sean afectados
+    noClip();
 }
 
 function mousePressed() {

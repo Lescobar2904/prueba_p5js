@@ -2,6 +2,7 @@ let img; // Variable para almacenar la imagen
 let currentImageIndex = 1; // Índice de la imagen actual
 let imgWidth = 400; // Nuevo ancho deseado para la imagen
 let imgHeight = 400; // Nuevo alto deseado para la imagen
+let prevButton, nextButton; // Botones de navegación
 
 function preload() {
     img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la primera imagen
@@ -14,23 +15,26 @@ function setup() {
 
 function draw() {
     background(0); // Fondo negro
-    // Calcular el centro de la pantalla y asegurar que la imagen no abarque toda la ventana
+
+    // Calcular el centro de la pantalla
     let x = (width - imgWidth) / 2;
     let y = (height - imgHeight) / 2;
-    
+
     // Mostrar la imagen en el centro de la pantalla
     image(img, x, y, imgWidth, imgHeight); // Mostrar la imagen en tamaño deseado
+
+    // Reposicionar los botones a los lados de la imagen
+    prevButton.position(x - 50, y + imgHeight / 2 - 20); // A la izquierda de la imagen
+    nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - 20); // A la derecha de la imagen
 }
 
 function createButtons() {
-    // Botón para imagen anterior
-    let prevButton = createButton('←');
-    prevButton.position(50, height / 2 - 20); // Posición en el lado izquierdo
+    // Crear el botón para la imagen anterior
+    prevButton = createButton('←');
     prevButton.mousePressed(prevImage); // Asignar función
 
-    // Botón para imagen siguiente
-    let nextButton = createButton('→');
-    nextButton.position(width - 100, height / 2 - 20); // Posición en el lado derecho
+    // Crear el botón para la imagen siguiente
+    nextButton = createButton('→');
     nextButton.mousePressed(nextImage); // Asignar función
 }
 
@@ -52,5 +56,4 @@ function nextImage() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight); // Ajustar el lienzo al cambiar el tamaño de la ventana
-    createButtons(); // Reposicionar los botones después del redimensionamiento
 }

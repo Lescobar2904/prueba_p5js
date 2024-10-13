@@ -4,6 +4,7 @@ let imgWidth = 400; // Ancho deseado para la imagen principal
 let imgHeight = 400; // Alto deseado para la imagen principal
 let thumbnails = []; // Arreglo para las miniaturas
 let cornerRadius = 30; // Radio de las esquinas redondeadas
+let prevButton, nextButton; // Variables para los botones
 
 function preload() {
     img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la primera imagen
@@ -33,30 +34,18 @@ function draw() {
     let x = 150; // Ajustar posición horizontal para que no se sobreponga con las miniaturas
     let y = (height - imgHeight) / 2;
 
-    // Dibujar un rectángulo redondeado
+    // Mostrar la imagen principal con bordes redondeados
     noFill();
     stroke(255); // Color del borde
     strokeWeight(4); // Grosor del borde
     rect(x, y, imgWidth, imgHeight, cornerRadius); // Dibujar rectángulo con esquinas redondeadas
 
-    // Usar clip() para que la imagen tenga los bordes redondeados
-    beginShape();
-    vertex(x, y);
-    vertex(x + imgWidth, y);
-    vertex(x + imgWidth, y + imgHeight);
-    vertex(x, y + imgHeight);
-    endShape(CLOSE);
-    clip();
-
-    // Mostrar la imagen principal dentro del área recortada
+    // Mostrar la imagen principal
     image(img, x, y, imgWidth, imgHeight); // Mostrar la imagen en el tamaño deseado
 
     // Reposicionar los botones a los lados de la imagen principal
-    prevButton.position(x - 50, y + imgHeight / 2 - 20); // Botón izquierdo
-    nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - 20); // Botón derecho
-
-    // Terminar el clipping para que los elementos siguientes no sean afectados
-    noClip();
+    prevButton.position(x - prevButton.width - 10, y + imgHeight / 2 - prevButton.height / 2); // Botón izquierdo
+    nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - nextButton.height / 2); // Botón derecho
 }
 
 function mousePressed() {
@@ -80,6 +69,10 @@ function createButtons() {
     // Crear el botón para la imagen siguiente
     nextButton = createButton('→');
     nextButton.mousePressed(nextImage); // Asignar función
+
+    // Estilo de los botones
+    prevButton.style('font-size', '24px');
+    nextButton.style('font-size', '24px');
 }
 
 function prevImage() {

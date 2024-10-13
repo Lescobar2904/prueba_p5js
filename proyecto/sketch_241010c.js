@@ -1,11 +1,16 @@
-let img; // Variable para almacenar la imagen
+let img; // Variable para almacenar la imagen principal
 let currentImageIndex = 1; // Índice de la imagen actual
-let imgWidth = 400; // Nuevo ancho deseado para la imagen
-let imgHeight = 400; // Nuevo alto deseado para la imagen
-let prevButton, nextButton; // Botones de navegación
+let imgWidth = 400; // Ancho deseado para la imagen principal
+let imgHeight = 400; // Alto deseado para la imagen principal
+let thumbnails = []; // Arreglo para las miniaturas
 
 function preload() {
     img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la primera imagen
+
+    // Cargar las miniaturas
+    for (let i = 1; i <= 9; i++) {
+        thumbnails[i] = loadImage(`images/image${i}.jpeg`);
+    }
 }
 
 function setup() {
@@ -16,16 +21,36 @@ function setup() {
 function draw() {
     background(0); // Fondo negro
 
-    // Calcular el centro de la pantalla
-    let x = (width - imgWidth) / 2;
+    // Mostrar miniaturas en el lado izquierdo
+    for (let i = 1; i <= 9; i++) {
+        let thumbnailX = 10; // Posición X fija
+        let thumbnailY = i * 50; // Espacio entre miniaturas
+        image(thumbnails[i], thumbnailX, thumbnailY, 40, 40); // Mostrar miniatura a 40x40
+    }
+
+    // Calcular el centro de la pantalla para la imagen principal
+    let x = 150; // Ajustar posición horizontal para que no se sobreponga con las miniaturas
     let y = (height - imgHeight) / 2;
 
-    // Mostrar la imagen en el centro de la pantalla
-    image(img, x, y, imgWidth, imgHeight); // Mostrar la imagen en tamaño deseado
+    // Mostrar la imagen principal en el centro de la pantalla
+    image(img, x, y, imgWidth, imgHeight); // Mostrar la imagen en el tamaño deseado
 
-    // Reposicionar los botones a los lados de la imagen
-    prevButton.position(x - 50, y + imgHeight / 2 - 20); // A la izquierda de la imagen
-    nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - 20); // A la derecha de la imagen
+    // Reposicionar los botones a los lados de la imagen principal
+    prevButton.position(x - 50, y + imgHeight / 2 - 20); // Botón izquierdo
+    nextButton.position(x + imgWidth + 10, y + imgHeight / 2 - 20); // Botón derecho
+}
+
+function mousePressed() {
+    // Verificar si se hace clic en una miniatura
+    for (let i = 1; i <= 9; i++) {
+        let thumbnailX = 10;
+        let thumbnailY = i * 50;
+        // Si el clic está dentro de los límites de una miniatura
+        if (mouseX > thumbnailX && mouseX < thumbnailX + 40 && mouseY > thumbnailY && mouseY < thumbnailY + 40) {
+            currentImageIndex = i; // Cambiar a la imagen correspondiente
+            img = loadImage(`images/image${currentImageIndex}.jpeg`); // Cargar la imagen seleccionada
+        }
+    }
 }
 
 function createButtons() {

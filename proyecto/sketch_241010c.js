@@ -41,19 +41,16 @@ function draw() {
         image(thumbnails[i], 10, i * 50, 50, 50); // Dibujar miniaturas
     }
 
-    // Mostrar la imagen principal con bordes redondeados
-    noStroke();
-    fill(255);
-    rect(150, (height - 400) / 2 - 5, 410, 410, 20); // Fondo con bordes redondeados
-    image(img, 155, (height - 400) / 2, 400, 400);
+    // Mostrar la imagen principal
+    image(img, 150, (height - 400) / 2, 400, 400); // Posición de la imagen principal
 
-    // Aplicar filtro a la imagen
+    // Aplicar filtro a la imagen si corresponde
     if (filterType === 'GRAY') {
         filter(GRAY);
     } else if (filterType === 'INVERT') {
         filter(INVERT);
     } else if (filterType === 'SEPIA') {
-        applySepia(); // Llamar función de sepia
+        applySepia();
     }
 }
 
@@ -74,16 +71,15 @@ function mousePressed() {
 
 // Función para simular el efecto sepia
 function applySepia() {
-    // Simulación de filtro sepia: mezcla de rojo, verde y azul
     loadPixels();
     for (let i = 0; i < pixels.length; i += 4) {
         let r = pixels[i];
         let g = pixels[i + 1];
         let b = pixels[i + 2];
 
-        pixels[i] = r * 0.393 + g * 0.769 + b * 0.189; // Red
-        pixels[i + 1] = r * 0.349 + g * 0.686 + b * 0.168; // Green
-        pixels[i + 2] = r * 0.272 + g * 0.534 + b * 0.131; // Blue
+        pixels[i] = r * 0.393 + g * 0.769 + b * 0.189;
+        pixels[i + 1] = r * 0.349 + g * 0.686 + b * 0.168;
+        pixels[i + 2] = r * 0.272 + g * 0.534 + b * 0.131;
     }
     updatePixels();
 }
